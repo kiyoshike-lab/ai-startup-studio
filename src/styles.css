@@ -124,8 +124,8 @@ textarea:focus {
 .idea-form button,
 .primary-button,
 .secondary-button,
-  .text-button,
-  .icon-button {
+.text-button,
+.icon-button {
   border: 0;
   border-radius: 8px;
   transition:
@@ -136,10 +136,14 @@ textarea:focus {
 
 .idea-form button,
 .primary-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   min-height: 44px;
   padding: 0 18px;
   background: #151515;
   color: #ffffff;
+  text-decoration: none;
 }
 
 .idea-form button:hover,
@@ -152,6 +156,76 @@ textarea:focus {
   margin-top: 18px;
   background: transparent;
   color: #555555;
+}
+
+.home-shell {
+  align-content: center;
+  gap: 92px;
+  padding-top: 72px;
+  padding-bottom: 56px;
+}
+
+.platform-section {
+  width: min(940px, 100%);
+  text-align: left;
+}
+
+.platform-section h2 {
+  margin: 0 0 22px;
+  color: #171717;
+  font-size: clamp(24px, 4vw, 42px);
+  font-weight: 620;
+  line-height: 1.12;
+  letter-spacing: 0;
+}
+
+.platform-flow {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0;
+  border-top: 1px solid #e7e7e2;
+  border-bottom: 1px solid #e7e7e2;
+}
+
+.platform-item {
+  position: relative;
+  display: grid;
+  gap: 8px;
+  min-height: 150px;
+  padding: 22px 22px 20px 0;
+  color: #1a1a1a;
+  text-decoration: none;
+}
+
+.platform-item + .platform-item {
+  padding-left: 22px;
+  border-left: 1px solid #e7e7e2;
+}
+
+.platform-item span {
+  color: #8a8a85;
+  font-size: 12px;
+}
+
+.platform-item strong {
+  font-size: 18px;
+  font-weight: 650;
+}
+
+.platform-item p {
+  margin: 0;
+  color: #5f5f5b;
+  line-height: 1.65;
+}
+
+.platform-item.current::after {
+  content: "Now";
+  position: absolute;
+  top: 22px;
+  right: 22px;
+  color: #111111;
+  font-size: 12px;
+  font-weight: 650;
 }
 
 .studio-shell {
@@ -523,6 +597,7 @@ textarea {
 
 .complete-actions {
   justify-content: center;
+  flex-wrap: wrap;
 }
 
 @media (max-width: 1020px) {
@@ -553,8 +628,39 @@ textarea {
     padding: 22px;
   }
 
+  .home-shell {
+    align-content: start;
+    gap: 64px;
+    padding-top: 82px;
+    padding-bottom: 38px;
+  }
+
   .idea-form {
     grid-template-columns: 1fr;
+  }
+
+  .platform-section h2 {
+    font-size: 28px;
+  }
+
+  .platform-flow {
+    grid-template-columns: 1fr;
+  }
+
+  .platform-item {
+    min-height: auto;
+    padding: 18px 0;
+  }
+
+  .platform-item + .platform-item {
+    padding-left: 0;
+    border-top: 1px solid #e7e7e2;
+    border-left: 0;
+  }
+
+  .platform-item.current::after {
+    top: 18px;
+    right: 0;
   }
 
   .studio-shell {

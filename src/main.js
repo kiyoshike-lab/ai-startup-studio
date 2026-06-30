@@ -4,6 +4,28 @@ const STORAGE_KEYS = {
   company: "ai-startup-studio.company"
 };
 
+// Production links: replace these URLs when Chance Vault and CEO OS are live.
+const CHANCE_VAULT_URL = "https://example.com/chance-vault";
+const CEO_OS_URL = "https://example.com/ceo-os";
+
+const platformFlow = [
+  {
+    name: "Chance Vault",
+    role: "勝ち筋を見つける",
+    href: CHANCE_VAULT_URL
+  },
+  {
+    name: "AI Startup Studio",
+    role: "会社を立ち上げる",
+    href: "#"
+  },
+  {
+    name: "CEO OS",
+    role: "会社を経営する",
+    href: CEO_OS_URL
+  }
+];
+
 const steps = [
   {
     id: "idea",
@@ -298,7 +320,28 @@ function renderHome() {
         </form>
         ${state.vault.length ? `<button class="text-button" data-view="vault" type="button">Vaultから続きを開く</button>` : ""}
       </section>
+      <section class="platform-section" aria-labelledby="platform-title">
+        <p class="kicker">AI Company Platform</p>
+        <h2 id="platform-title">勝ち筋から、立ち上げ、経営へ。</h2>
+        <div class="platform-flow">
+          ${platformFlow.map((service, index) => renderPlatformItem(service, index)).join("")}
+        </div>
+      </section>
     </main>
+  `;
+}
+
+function renderPlatformItem(service, index) {
+  const isCurrent = service.name === "AI Startup Studio";
+  const element = isCurrent ? "div" : "a";
+  const href = isCurrent ? "" : ` href="${service.href}"`;
+
+  return `
+    <${element} class="platform-item ${isCurrent ? "current" : ""}"${href}>
+      <span>${String(index + 1).padStart(2, "0")}</span>
+      <strong>${service.name}</strong>
+      <p>${service.role}</p>
+    </${element}>
   `;
 }
 
@@ -455,6 +498,7 @@ function renderComplete() {
           <div><dt>会社説明</dt><dd>${escapeHtml(company.description || "未入力")}</dd></div>
         </dl>
         <div class="complete-actions">
+          <a class="primary-button cta-link" href="${CEO_OS_URL}">CEO OSで経営を始める</a>
           <button class="primary-button" data-action="restart" type="button">新しい会社を作る</button>
           <button class="secondary-button" data-view="vault" type="button">Vaultを見る</button>
         </div>
