@@ -1,0 +1,665 @@
+:root {
+  color: #161616;
+  background: #fbfbfa;
+  font-family:
+    Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.82), rgba(247, 247, 245, 0.94)),
+    #fbfbfa;
+}
+
+button,
+input,
+textarea {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.home-shell,
+.complete-shell,
+.vault-shell {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 32px;
+}
+
+.home-panel,
+.complete-panel {
+  width: min(760px, 100%);
+  text-align: center;
+}
+
+.kicker {
+  margin: 0 0 16px;
+  color: #767676;
+  font-size: 13px;
+  letter-spacing: 0;
+}
+
+h1,
+h2,
+p {
+  margin-top: 0;
+}
+
+h1 {
+  margin-bottom: 28px;
+  color: #111111;
+  font-size: clamp(36px, 7vw, 76px);
+  font-weight: 620;
+  line-height: 1.02;
+  letter-spacing: 0;
+}
+
+.idea-form {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 10px;
+  width: min(620px, 100%);
+  margin: 0 auto;
+  padding: 8px;
+  border: 1px solid #e8e8e4;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.78);
+  box-shadow: 0 18px 60px rgba(20, 20, 20, 0.06);
+}
+
+.idea-form input,
+.line-input,
+textarea {
+  width: 100%;
+  border: 1px solid #e5e5e1;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #151515;
+  outline: none;
+  transition:
+    border-color 160ms ease,
+    box-shadow 160ms ease;
+}
+
+.idea-form input {
+  min-height: 48px;
+  padding: 0 16px;
+  border: 0;
+  background: transparent;
+}
+
+.idea-form input:focus,
+.line-input:focus,
+textarea:focus {
+  border-color: #9e9e97;
+  box-shadow: 0 0 0 4px rgba(22, 22, 22, 0.06);
+}
+
+.idea-form button,
+.primary-button,
+.secondary-button,
+  .text-button,
+  .icon-button {
+  border: 0;
+  border-radius: 8px;
+  transition:
+    transform 160ms ease,
+    background 160ms ease,
+    border-color 160ms ease;
+}
+
+.idea-form button,
+.primary-button {
+  min-height: 44px;
+  padding: 0 18px;
+  background: #151515;
+  color: #ffffff;
+}
+
+.idea-form button:hover,
+.primary-button:hover {
+  background: #000000;
+  transform: translateY(-1px);
+}
+
+.text-button {
+  margin-top: 18px;
+  background: transparent;
+  color: #555555;
+}
+
+.studio-shell {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 268px minmax(0, 1fr) 328px;
+  color: #161616;
+}
+
+.steps-pane,
+.advisor-pane {
+  min-height: 100vh;
+  padding: 24px;
+  border-color: #ececea;
+  background: rgba(255, 255, 255, 0.62);
+}
+
+.steps-pane {
+  border-right: 1px solid #ececea;
+}
+
+.advisor-pane {
+  border-left: 1px solid #ececea;
+}
+
+.pane-heading,
+.workspace-bar,
+.simple-nav,
+.complete-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.pane-heading {
+  margin-bottom: 18px;
+  color: #333333;
+  font-weight: 560;
+}
+
+.icon-button {
+  display: grid;
+  width: 36px;
+  height: 36px;
+  place-items: center;
+  background: #f3f3f1;
+  color: #1f1f1f;
+}
+
+.progress-summary {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 22px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #ececea;
+}
+
+.progress-summary span,
+.step-group h2,
+.advisor-note {
+  margin: 0;
+  color: #8a8a85;
+  font-size: 12px;
+}
+
+.progress-summary strong {
+  color: #111111;
+  font-size: 18px;
+  font-weight: 650;
+}
+
+.progress-track {
+  height: 4px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: #ecece8;
+}
+
+.progress-track span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: #111111;
+}
+
+.step-group {
+  margin-top: 18px;
+}
+
+.step-group h2 {
+  margin-bottom: 8px;
+  padding-left: 8px;
+  font-weight: 620;
+}
+
+.steps-list {
+  display: grid;
+  gap: 3px;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.step-item {
+  display: grid;
+  grid-template-columns: 28px 1fr;
+  align-items: center;
+  width: 100%;
+  min-height: 38px;
+  padding: 6px 9px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: #686865;
+  text-align: left;
+}
+
+.step-item span {
+  display: grid;
+  width: 22px;
+  height: 22px;
+  place-items: center;
+  border-radius: 50%;
+  background: #eeeeeb;
+  color: #74746f;
+  font-size: 12px;
+}
+
+.step-item strong {
+  overflow: hidden;
+  font-size: 14px;
+  font-weight: 520;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.step-item.active {
+  border-color: #d8d8d2;
+  background: #ffffff;
+  color: #151515;
+  box-shadow: 0 14px 34px rgba(20, 20, 20, 0.08);
+}
+
+.step-item.active span {
+  background: #111111;
+  color: #ffffff;
+}
+
+.step-item.active strong {
+  font-weight: 680;
+}
+
+.step-item.done span {
+  background: #151515;
+  color: #ffffff;
+}
+
+.workspace {
+  min-width: 0;
+  padding: 24px clamp(24px, 6vw, 72px) 56px;
+}
+
+.workspace-bar {
+  min-height: 44px;
+  margin-bottom: 58px;
+  color: #777777;
+  font-size: 13px;
+}
+
+.bar-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.secondary-button {
+  min-height: 36px;
+  padding: 0 12px;
+  border: 1px solid #e2e2de;
+  background: #ffffff;
+  color: #303030;
+}
+
+.secondary-button:hover,
+.icon-button:hover {
+  background: #f6f6f4;
+}
+
+.step-content {
+  width: min(780px, 100%);
+}
+
+.step-content h1 {
+  margin-bottom: 16px;
+  font-size: clamp(42px, 7vw, 88px);
+}
+
+.step-prompt {
+  max-width: 620px;
+  color: #5f5f5b;
+  font-size: 18px;
+  line-height: 1.7;
+}
+
+.ai-proposal {
+  margin: 32px 0;
+  padding: 22px 0;
+  border-top: 1px solid #e9e9e5;
+  border-bottom: 1px solid #e9e9e5;
+}
+
+.ai-proposal span,
+.input-label {
+  display: block;
+  margin-bottom: 8px;
+  color: #777777;
+  font-size: 13px;
+}
+
+.ai-proposal p {
+  margin: 0;
+  color: #222222;
+  font-size: 18px;
+  line-height: 1.65;
+}
+
+.input-label {
+  margin-top: 18px;
+}
+
+.line-input {
+  min-height: 46px;
+  padding: 0 14px;
+}
+
+textarea {
+  min-height: 180px;
+  resize: vertical;
+  padding: 14px;
+  line-height: 1.7;
+}
+
+.step-content .primary-button {
+  margin-top: 18px;
+}
+
+.advisor-pane h2 {
+  margin: 0 0 8px;
+  color: #1d1d1d;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.advisor-note {
+  margin-bottom: 24px;
+  line-height: 1.6;
+}
+
+.suggestions {
+  display: grid;
+  gap: 14px;
+}
+
+.suggestions p {
+  margin: 0;
+  padding: 0 0 14px 14px;
+  border-left: 2px solid #deded8;
+  border-bottom: 1px solid #ededeb;
+  color: #565653;
+  line-height: 1.65;
+}
+
+.simple-nav {
+  position: fixed;
+  top: 24px;
+  left: 24px;
+  right: 24px;
+  color: #303030;
+  font-weight: 560;
+}
+
+.vault-shell {
+  place-items: start center;
+  padding-top: 108px;
+}
+
+.vault-list {
+  display: grid;
+  gap: 12px;
+  width: min(860px, 100%);
+}
+
+.vault-item {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 20px;
+  align-items: center;
+  padding: 20px 0;
+  border-bottom: 1px solid #e9e9e5;
+}
+
+.vault-item h2 {
+  margin-bottom: 6px;
+  font-size: 20px;
+}
+
+.vault-item p {
+  margin-bottom: 8px;
+  color: #5e5e5a;
+  line-height: 1.6;
+}
+
+.vault-item small,
+.empty-state {
+  color: #7a7a76;
+}
+
+.complete-panel h1 {
+  margin-bottom: 16px;
+}
+
+.complete-panel > p,
+.complete-lead {
+  color: #5c5c58;
+  font-size: 18px;
+  line-height: 1.7;
+}
+
+.handoff-badge {
+  display: inline-grid;
+  min-height: 34px;
+  align-items: center;
+  margin: 22px 0 0;
+  padding: 0 14px;
+  border: 1px solid #deded8;
+  border-radius: 999px;
+  background: #ffffff;
+  color: #333333;
+  font-size: 13px;
+  font-weight: 560;
+}
+
+.handoff-list {
+  display: grid;
+  gap: 0;
+  margin: 36px 0;
+  text-align: left;
+  border-top: 1px solid #e9e9e5;
+}
+
+.handoff-list div {
+  display: grid;
+  grid-template-columns: 160px 1fr;
+  gap: 16px;
+  padding: 16px 0;
+  border-bottom: 1px solid #e9e9e5;
+}
+
+.handoff-list dt {
+  color: #777777;
+  font-size: 13px;
+}
+
+.handoff-list dd {
+  margin: 0;
+  color: #222222;
+  line-height: 1.65;
+}
+
+.complete-actions {
+  justify-content: center;
+}
+
+@media (max-width: 1020px) {
+  .studio-shell {
+    grid-template-columns: 228px minmax(0, 1fr);
+  }
+
+  .advisor-pane {
+    grid-column: 1 / -1;
+    min-height: auto;
+    border-top: 1px solid #ececea;
+    border-left: 0;
+  }
+
+  .suggestions {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 720px) {
+  body {
+    background: #fbfbfa;
+  }
+
+  .home-shell,
+  .complete-shell,
+  .vault-shell {
+    padding: 22px;
+  }
+
+  .idea-form {
+    grid-template-columns: 1fr;
+  }
+
+  .studio-shell {
+    display: block;
+  }
+
+  .pane-heading {
+    margin-bottom: 12px;
+  }
+
+  .steps-pane,
+  .advisor-pane {
+    min-height: auto;
+    padding: 16px;
+    border-right: 0;
+  }
+
+  .steps-pane {
+    position: sticky;
+    top: 0;
+    z-index: 3;
+    border-bottom: 1px solid #ececea;
+    background: rgba(251, 251, 250, 0.96);
+    backdrop-filter: blur(16px);
+  }
+
+  .progress-summary {
+    margin-bottom: 12px;
+    padding-bottom: 14px;
+  }
+
+  .progress-summary strong {
+    font-size: 16px;
+  }
+
+  .step-group {
+    margin-top: 10px;
+  }
+
+  .step-group h2 {
+    margin-bottom: 6px;
+    padding-left: 2px;
+  }
+
+  .steps-list {
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(116px, max-content);
+    overflow-x: auto;
+    padding-bottom: 4px;
+    scrollbar-width: none;
+  }
+
+  .steps-list::-webkit-scrollbar {
+    display: none;
+  }
+
+  .step-item {
+    grid-template-columns: 24px 1fr;
+    min-height: 36px;
+    padding: 6px 8px;
+  }
+
+  .workspace {
+    padding: 18px 18px 36px;
+  }
+
+  .workspace-bar {
+    align-items: flex-start;
+    margin-bottom: 34px;
+  }
+
+  .bar-actions {
+    justify-content: flex-end;
+  }
+
+  .suggestions {
+    grid-template-columns: 1fr;
+  }
+
+  .step-content h1 {
+    font-size: clamp(40px, 12vw, 58px);
+  }
+
+  .step-prompt,
+  .ai-proposal p,
+  .complete-panel > p {
+    font-size: 16px;
+  }
+
+  textarea {
+    min-height: 156px;
+  }
+
+  .vault-item,
+  .handoff-list div {
+    grid-template-columns: 1fr;
+  }
+
+  .complete-actions {
+    display: grid;
+  }
+
+  .simple-nav {
+    top: 18px;
+    left: 18px;
+    right: 18px;
+  }
+}
