@@ -4,23 +4,23 @@ const STORAGE_KEYS = {
   company: "ai-startup-studio.company"
 };
 
-// Production links: replace these placeholder URLs with the live service URLs.
 const SERVICE_URLS = {
-  chanceVault: "https://example.com/chance-vault",
-  startupStudio: "https://example.com/ai-startup-studio",
-  ceoOs: "https://example.com/ceo-os"
+  chanceVault: "https://chance-vault.vercel.app",
+  startupStudio: "https://ai-startup-studio-xi.vercel.app",
+  ceoOs: "https://ceo-os-eight-chi.vercel.app",
+  aiJobHuntingCoach: "https://ai-job-hunting-coach-l85l.vercel.app"
 };
 
 const platformFlow = [
   {
     name: "Chance Vault",
-    role: "勝ち筋を見つける",
+    role: "ビジネスチャンスを見つける",
     description: "市場の変化、未充足の課題、最初に狙うべき機会を整理します。",
     href: SERVICE_URLS.chanceVault
   },
   {
     name: "AI Startup Studio",
-    role: "会社を立ち上げる",
+    role: "会社を作る",
     description: "共同創業者と一緒に、アイデアを会社として成立する形へ進めます。",
     href: SERVICE_URLS.startupStudio
   },
@@ -29,6 +29,12 @@ const platformFlow = [
     role: "会社を経営する",
     description: "設立後の意思決定、運営、成長の実行管理へ引き継ぎます。",
     href: SERVICE_URLS.ceoOs
+  },
+  {
+    name: "AI Job Hunting Coach",
+    role: "AI就活サポート",
+    description: "自己分析、応募準備、面接対策までをAIと一緒に進めます。",
+    href: SERVICE_URLS.aiJobHuntingCoach
   }
 ];
 
@@ -342,6 +348,7 @@ function renderPlatformItem(service, index) {
 
   return `
     <article class="platform-item ${isCurrent ? "current" : ""}">
+      <a class="platform-card-link" href="${service.href}" target="_blank" rel="noopener noreferrer" aria-label="${service.name}を開く"></a>
       <div class="platform-card-head">
         <span>${String(index + 1).padStart(2, "0")}</span>
         ${isCurrent ? `<em>Now</em>` : ""}
@@ -349,7 +356,7 @@ function renderPlatformItem(service, index) {
       <strong>${service.name}</strong>
       <p class="platform-role">${service.role}</p>
       <p class="platform-description">${service.description}</p>
-      <a class="platform-button" href="${service.href}">開く</a>
+      <a class="platform-button" href="${service.href}" target="_blank" rel="noopener noreferrer">開く</a>
     </article>
   `;
 }
@@ -507,7 +514,7 @@ function renderComplete() {
           <div><dt>会社説明</dt><dd>${escapeHtml(company.description || "未入力")}</dd></div>
         </dl>
         <div class="complete-actions">
-          <a class="primary-button cta-link" href="${SERVICE_URLS.ceoOs}">CEO OSで経営を始める</a>
+          <a class="primary-button cta-link" href="${SERVICE_URLS.ceoOs}" target="_blank" rel="noopener noreferrer">CEO OSで経営を始める</a>
           <button class="primary-button" data-action="restart" type="button">新しい会社を作る</button>
           <button class="secondary-button" data-view="vault" type="button">Vaultを見る</button>
         </div>

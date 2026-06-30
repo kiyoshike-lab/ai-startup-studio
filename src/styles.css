@@ -172,7 +172,7 @@ textarea:focus {
 }
 
 .platform-section {
-  width: min(1080px, 100%);
+  width: min(1180px, 100%);
   text-align: left;
 }
 
@@ -187,7 +187,7 @@ textarea:focus {
 
 .platform-flow {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 18px;
 }
 
@@ -204,6 +204,16 @@ textarea:focus {
   color: var(--ink);
   text-decoration: none;
   box-shadow: 0 16px 44px rgba(17, 24, 39, 0.07);
+  transition:
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms ease;
+}
+
+.platform-item:hover {
+  border-color: rgba(37, 99, 235, 0.62);
+  box-shadow: 0 24px 70px rgba(37, 99, 235, 0.18);
+  transform: translateY(-4px);
 }
 
 .platform-item.current {
@@ -211,6 +221,13 @@ textarea:focus {
   background:
     linear-gradient(180deg, rgba(124, 58, 237, 0.07), rgba(37, 99, 235, 0.03)),
     #ffffff;
+}
+
+.platform-card-link {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: inherit;
 }
 
 .platform-card-head {
@@ -235,6 +252,14 @@ textarea:focus {
   color: var(--accent-purple);
 }
 
+.platform-card-head,
+.platform-item strong,
+.platform-role,
+.platform-description {
+  position: relative;
+  z-index: 2;
+}
+
 .platform-item strong {
   font-size: 24px;
   font-weight: 760;
@@ -257,6 +282,8 @@ textarea:focus {
 }
 
 .platform-button {
+  position: relative;
+  z-index: 3;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -669,6 +696,10 @@ textarea {
   .suggestions {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
+
+  .platform-flow {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 @media (max-width: 720px) {
@@ -718,6 +749,10 @@ textarea {
   .platform-item {
     min-height: auto;
     padding: 20px;
+  }
+
+  .platform-item:hover {
+    transform: none;
   }
 
   .platform-item strong {
