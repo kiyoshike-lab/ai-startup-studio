@@ -4,6 +4,7 @@ import { join } from "node:path";
 
 const files = [
   "index.html",
+  "src/llmClient.js",
   "src/main.js",
   "src/styles.css",
   "scripts/build.js",

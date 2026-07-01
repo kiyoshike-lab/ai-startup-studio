@@ -1,7 +1,8 @@
 const STORAGE_KEYS = {
   current: "ai-startup-studio.current",
   vault: "ai-startup-studio.vault",
-  company: "ai-startup-studio.company"
+  company: "ai-startup-studio.company",
+  startupIdea: "ai-startup-studio.startupIdea"
 };
 
 const SERVICE_URLS = {
@@ -144,6 +145,14 @@ const initialState = {
   activeStep: 0,
   completedSteps: [],
   ideaInput: "",
+  startupIdea: "",
+  isStarting: false,
+  generatedSuggestions: {},
+  llm: {
+    status: "idle",
+    message: "",
+    stepId: ""
+  },
   company: {
     name: "",
     purpose: "",
@@ -165,11 +174,24 @@ const initialState = {
 
 let state = loadState();
 const app = document.querySelector("#app");
+const textGenerator = window.AiStudioLLM?.createTextGenerator();
 
 function loadState() {
+  const current = readJson(STORAGE_KEYS.current, {});
   return {
     ...initialState,
-    ...readJson(STORAGE_KEYS.current, {}),
+    ...current,
+    company: {
+      ...initialState.company,
+      ...(current.company || {})
+    },
+    generatedSuggestions: current.generatedSuggestions || {},
+    llm: {
+      ...initialState.llm,
+      ...(current.llm || {})
+    },
+    startupIdea: current.startupIdea || localStorage.getItem(STORAGE_KEYS.startupIdea) || "",
+    isStarting: false,
     vault: readJson(STORAGE_KEYS.vault, []),
     foundedCompany: readJson(STORAGE_KEYS.company, null)
   };
@@ -185,10 +207,10 @@ function readJson(key, fallback) {
 }
 
 function saveCurrent() {
-  const { activeStep, completedSteps, ideaInput, company, view } = state;
+  const { activeStep, completedSteps, generatedSuggestions, ideaInput, startupIdea, company, view } = state;
   localStorage.setItem(
     STORAGE_KEYS.current,
-    JSON.stringify({ activeStep, completedSteps, ideaInput, company, view })
+    JSON.stringify({ activeStep, completedSteps, generatedSuggestions, ideaInput, startupIdea, company, view })
   );
 }
 
@@ -209,18 +231,40 @@ function createCompanyName(input) {
 
 function startStudio(event) {
   event.preventDefault();
-  const form = new FormData(event.currentTarget);
-  const idea = String(form.get("idea") || "").trim();
+  const formElement = event.target.closest("[data-action='start']");
+  const form = new FormData(formElement);
+  const idea = String(form.get("idea") || "").trim() || "新しい会社を作る";
+  const nextCompany = {
+    ...initialState.company,
+    name: createCompanyName(idea),
+    purpose: idea
+  };
+
+  localStorage.setItem(STORAGE_KEYS.startupIdea, idea);
 
   updateState({
-    view: "studio",
+    view: "home",
     ideaInput: idea,
-    company: {
-      ...state.company,
-      name: state.company.name || createCompanyName(idea),
-      purpose: state.company.purpose || idea
-    }
+    startupIdea: idea,
+    isStarting: true,
+    generatedSuggestions: {},
+    company: nextCompany
   });
+
+  window.setTimeout(() => {
+    updateState({
+      view: "studio",
+      activeStep: 0,
+      completedSteps: [],
+      isStarting: false,
+      llm: {
+        status: "idle",
+        message: "",
+        stepId: ""
+      }
+    });
+    window.setTimeout(() => generateCurrentSuggestion(), 0);
+  }, 450);
 }
 
 function updateCompanyField(field, value) {
@@ -247,6 +291,7 @@ function completeStep() {
     completedSteps,
     activeStep: Math.min(state.activeStep + 1, steps.length - 1)
   });
+  window.setTimeout(() => generateCurrentSuggestion(), 0);
 }
 
 function foundCompany() {
@@ -307,6 +352,61 @@ function restoreFromVault(id) {
     ideaInput: item.ideaInput,
     company: item.company
   });
+  window.setTimeout(() => generateCurrentSuggestion(), 0);
+}
+
+async function generateCurrentSuggestion() {
+  const currentStep = steps[state.activeStep];
+
+  if (!textGenerator) {
+    updateState({
+      llm: {
+        status: "error",
+        message: "LLM接続層を読み込めませんでした。テンプレート提案を表示しています。",
+        stepId: currentStep.id
+      }
+    });
+    return;
+  }
+
+  updateState({
+    llm: {
+      status: "loading",
+      message: "共同創業者が提案を作成しています。",
+      stepId: currentStep.id
+    }
+  });
+
+  try {
+    const result = await textGenerator.generateStepSuggestion({
+      stepTitle: currentStep.title,
+      stepPrompt: currentStep.prompt,
+      currentInput: state.company[currentStep.field] || "",
+      company: state.company
+    });
+    const suggestion = result.text || result;
+    const model = result.model || window.AiStudioLLM.config.model;
+
+    updateState({
+      generatedSuggestions: {
+        ...state.generatedSuggestions,
+        [currentStep.id]: suggestion || currentStep.suggestion
+      },
+      llm: {
+        status: "ready",
+        message: `Ollama ${model} で生成しました。`,
+        stepId: currentStep.id
+      }
+    });
+  } catch (error) {
+    updateState({
+      llm: {
+        status: "error",
+        message: `生成に失敗しました。テンプレート提案を表示しています。${error.message}`,
+        stepId: currentStep.id
+      }
+    });
+  }
 }
 
 function resetStudio() {
@@ -328,8 +428,9 @@ function renderHome() {
         <form class="idea-form" data-action="start">
           <label class="visually-hidden" for="idea">今日はどんな会社を作りましょう？</label>
           <input id="idea" name="idea" value="${escapeHtml(state.ideaInput)}" placeholder="今日はどんな会社を作りましょう？" autocomplete="off" />
-          <button type="submit">始める</button>
+          <button type="submit" ${state.isStarting ? "disabled" : ""}>${state.isStarting ? "開始中" : "始める"}</button>
         </form>
+        ${state.isStarting ? `<p class="starting-message">共同創業を開始しています…</p>` : ""}
         ${state.vault.length ? `<button class="text-button" data-view="vault" type="button">Vaultから続きを開く</button>` : ""}
       </section>
       <section class="platform-section" aria-labelledby="platform-title">
@@ -365,6 +466,9 @@ function renderStudio() {
   const currentStep = steps[state.activeStep];
   const value = state.company[currentStep.field] || "";
   const progress = Math.round(((state.activeStep + 1) / steps.length) * 100);
+  const dynamicSuggestion = state.generatedSuggestions[currentStep.id] || currentStep.suggestion;
+  const isGenerating = state.llm.status === "loading" && state.llm.stepId === currentStep.id;
+  const llmMessage = state.llm.stepId === currentStep.id ? state.llm.message : "";
 
   return `
     <main class="studio-shell">
@@ -396,8 +500,14 @@ function renderStudio() {
           <p class="step-prompt">${currentStep.prompt}</p>
 
           <div class="ai-proposal">
-            <span>共同創業者の視点</span>
-            <p>${currentStep.suggestion}</p>
+            <div class="proposal-head">
+              <span>共同創業者の視点</span>
+              <button class="secondary-button compact-button" data-action="generate-suggestion" type="button" ${isGenerating ? "disabled" : ""}>
+                ${state.generatedSuggestions[currentStep.id] ? "再生成" : "生成する"}
+              </button>
+            </div>
+            <p>${escapeHtml(isGenerating ? "入力内容を読み取り、次の意思決定につながる提案を作成しています。" : dynamicSuggestion)}</p>
+            ${llmMessage ? `<small class="llm-status ${state.llm.status}">${escapeHtml(llmMessage)}</small>` : ""}
           </div>
 
           <label class="input-label" for="company-name">会社名</label>
@@ -577,6 +687,7 @@ document.addEventListener("click", (event) => {
 
   const actions = {
     complete: completeStep,
+    "generate-suggestion": generateCurrentSuggestion,
     vault: saveToVault,
     home: () => updateState({ view: "home" }),
     "back-to-studio": () => updateState({ view: state.company.name ? "studio" : "home" }),

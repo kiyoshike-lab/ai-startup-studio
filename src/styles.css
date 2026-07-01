@@ -62,6 +62,11 @@ button {
   text-align: center;
 }
 
+.home-panel {
+  position: relative;
+  z-index: 5;
+}
+
 .kicker {
   margin: 0 0 18px;
   color: var(--accent-blue);
@@ -165,6 +170,13 @@ textarea:focus {
   color: #555555;
 }
 
+.starting-message {
+  margin: 14px 0 0;
+  color: var(--accent-blue);
+  font-size: 14px;
+  font-weight: 680;
+}
+
 .home-shell {
   align-content: center;
   gap: 104px;
@@ -172,6 +184,8 @@ textarea:focus {
 }
 
 .platform-section {
+  position: relative;
+  z-index: 1;
   width: min(1180px, 100%);
   text-align: left;
 }
@@ -522,11 +536,50 @@ textarea:focus {
   font-weight: 680;
 }
 
+.proposal-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 12px;
+}
+
+.proposal-head span {
+  margin-bottom: 0;
+}
+
+.compact-button {
+  min-height: 38px;
+  padding: 0 14px;
+  white-space: nowrap;
+}
+
+button:disabled {
+  cursor: wait;
+  opacity: 0.62;
+}
+
 .ai-proposal p {
   margin: 0;
   color: var(--ink);
   font-size: 19px;
   line-height: 1.65;
+}
+
+.llm-status {
+  display: block;
+  margin-top: 12px;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.llm-status.ready {
+  color: var(--accent-blue);
+}
+
+.llm-status.error {
+  color: #9f1239;
 }
 
 .input-label {
@@ -844,6 +897,11 @@ textarea {
   .ai-proposal p,
   .complete-panel > p {
     font-size: 17px;
+  }
+
+  .proposal-head {
+    align-items: stretch;
+    flex-direction: column;
   }
 
   textarea {
